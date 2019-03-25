@@ -7,26 +7,26 @@ import json
 
 
 class LogLevel(Enum):
-    DEBUG = 0,
-    TRACE = 1,
-    INFO = 2,
-    WARN = 3,
-    ERROR = 4,
+    DEBUG = 0
+    TRACE = 1
+    INFO = 2
+    WARN = 3
+    ERROR = 4
     FATAL = 5
 
 
 class HttpMethod(Enum):
-    GET = 0,
+    GET = 0
     POST = 1
 
 
 class LogFormat(Enum):
-    TEXT = 0,
+    TEXT = 0
     JSON = 1
 
 
 class LogDateFormat(Enum):
-    LOCAL = 0,
+    LOCAL = 0
     UTC = 1
 
 
@@ -67,16 +67,30 @@ class Log:
                 self.handler = log_handler
                 self.handler_flag = True
 
-
         if self.console_flag:
             self.min_level_console = min_level_console
 
         self.date_format = date_format
 
     def debug(self, message: str):
-        pass
+        self.__main_writer(LogLevel.DEBUG, message)
 
-    def __main_writer(self, log_level: LogLevel ,message:str):
+    def trace(self, message: str):
+        self.__main_writer(LogLevel.TRACE, message)
+
+    def info(self, message: str):
+        self.__main_writer(LogLevel.INFO, message)
+
+    def warn(self, message: str):
+        self.__main_writer(LogLevel.WARN, message)
+
+    def error(self, message: str):
+        self.__main_writer(LogLevel.ERROR, message)
+
+    def fatal(self, message: str):
+        self.__main_writer(LogLevel.FATAL, message)
+
+    def __main_writer(self, log_level: LogLevel, message:str):
         if self.date_format == LogDateFormat.LOCAL:
             date_now = datetime.now()
         elif self.date_format == LogDateFormat.UTC:
