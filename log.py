@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import IntEnum, Enum
 from termcolor import colored
 from datetime import datetime
 from requests import Session
@@ -6,7 +6,7 @@ import os
 import json
 
 
-class LogLevel(Enum):
+class LogLevel(IntEnum):
     DEBUG = 0
     TRACE = 1
     INFO = 2
@@ -39,7 +39,7 @@ class Log:
         self.console_flag = console_out
         self.file_flag = False
         self.http_flag = False
-        self.handler_flag = log_handler is None
+        self.handler_flag = False
 
         if file_name is not None:
             self.file_name = file_name
@@ -104,7 +104,7 @@ class Log:
 
         log_string = f'{level_string.upper()}: [{date_string}]: {message}'
         log_object = {
-            "date": date_now,
+            "date": date_now.isoformat(),
             "type": level_string,
             "message": message
         }
@@ -148,7 +148,7 @@ class Log:
                     raise ValueError("Wrong http log format")
 
                 file = open(self.file_name, "a+")
-                file.write(file_string)
+                file.write(file_string+"\n")
                 file.close()
 
         if self.handler_flag:
